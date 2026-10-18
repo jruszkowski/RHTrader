@@ -1,0 +1,28 @@
+# Weekly credit-spread (theta) strategy. dry_run=true means NO order is ever sent until you flip it.
+[policy]
+dry_run = true
+require_approval = true        # human y/N before any real OPENING order (wing or short leg)
+approve_exits = false          # closing orders skip approval so an exit can't be stranded
+approval_timeout_s = 120       # unanswered approval = declined
+max_order_notional = 100.0     # USD premium for a protective long wing (contracts x price x 100)
+max_daily_notional = 200.0     # USD of wing premium bought per day
+max_orders_per_day = 8         # counts each leg
+allow_short_legs = true        # short options allowed ONLY when a protective long is already held
+max_spread_width = 2.5         # USD between short and long strikes
+max_risk_per_trade = 250.0     # max loss of one spread = width x 100 x contracts (credit ignored: conservative)
+max_open_risk = 500.0          # total max loss across all open spreads
+min_credit_ratio = 0.20        # net credit must be >= 20% of width
+dte_min = 2                    # expiration 2..10 days out = this Friday or next
+dte_max = 10
+entry_weekdays = [0, 1, 2]     # new positions Mon-Wed only (0=Mon); closes are allowed any day
+allowed_symbols = []           # underlyings, e.g. ["KO", "PG", "XLU"]; empty = any
+tz = "America/New_York"
+trade_window_start = "10:00"   # entries/management window; avoids the open and close
+trade_window_end = "14:30"
+flatten_at = "14:45"           # `watch` closes everything EXPIRING TODAY at this time
+kill_switch_file = "STOP"
+read_only_tools = []           # extra tool names to treat as read-only (see the flags printed by `tools`)
+
+[agent]
+model = "claude-sonnet-5-5"
+max_steps = 25

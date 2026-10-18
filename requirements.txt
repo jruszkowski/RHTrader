@@ -1,0 +1,7 @@
+mcp>=1.10,<2
+anthropic>=0.50
+# backtest
+pandas
+numpy
+matplotlib
+yfinance

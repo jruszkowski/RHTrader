@@ -1,0 +1,23 @@
+# Safe defaults: dry_run=true means NO order is ever sent until you flip it.
+[policy]
+dry_run = true                 # intercept order calls, never send them
+require_approval = true        # human y/N before any real OPENING order
+approve_exits = false          # closing orders skip approval (so an exit can't be stranded at 3:55)
+approval_timeout_s = 90        # unanswered approval = declined (these trades are time-sensitive)
+max_order_notional = 50.0      # USD premium per trade (contracts x price x 100)
+max_daily_notional = 150.0     # USD premium opened per day == your max daily loss on long options
+max_orders_per_day = 6
+allowed_symbols = []           # underlyings, e.g. ["SPY", "QQQ", "TSLA"]; empty = any
+dte_min = 0                   # expiration must be today
+dte_max = 0
+allow_short_legs = false       # long options only
+tz = "America/New_York"
+trade_window_start = "15:00"   # buys allowed only inside this window (set 00:00-23:59 to test off-hours)
+trade_window_end = "15:50"
+flatten_at = "15:55"           # `watch` runs a close-everything pass at this time
+kill_switch_file = "STOP"      # if this file exists, all order tools are blocked
+read_only_tools = []           # extra tool names to treat as read-only (see the flags printed by `tools`)
+
+[agent]
+model = "claude-sonnet-5-5"
+max_steps = 20

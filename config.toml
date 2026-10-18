@@ -1,0 +1,25 @@
+# Intraday equity momentum. dry_run=true means NO order is ever sent until you flip it.
+[policy]
+dry_run = true
+require_approval = true        # human y/N before every BUY (set false for hands-off once a dry run looks sane)
+approve_exits = false          # sells never wait for approval, so a position can't get stuck
+approval_timeout_s = 60        # unanswered approval = declined
+max_order_notional = 50.0      # USD per trade
+max_orders_per_day = 20        # entries per day
+max_daily_notional = 1000.0    # USD of entries per day (20 x $50)
+max_symbol_notional_per_day = 150.0   # at most 3 entries in any one name per day (0 = off)
+count_exits = false            # true = sells also count toward the 20 trades / $1000 (they are still never blocked)
+allow_options = false          # this strategy is equities only
+allow_short_legs = false
+entry_weekdays = [0, 1, 2, 3, 4]
+allowed_symbols = []           # e.g. ["NVDA", "TSLA"]; empty = any symbol the agent finds
+tz = "America/New_York"
+trade_window_start = "09:45"   # no entries in the first 15 min (wide spreads, noisy prints)
+trade_window_end = "15:30"     # no new entries in the last 30 min
+flatten_at = "15:45"           # `watch` runs a close-everything pass; management passes run until then
+kill_switch_file = "STOP"
+read_only_tools = []           # extra tool names to treat as read-only (see the flags printed by `tools`)
+
+[agent]
+model = "claude-sonnet-5-5"
+max_steps = 25
